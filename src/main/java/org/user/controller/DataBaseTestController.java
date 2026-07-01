@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.user.busisness.MongoServices;
+import org.user.busisness.ProducerService;
 import org.user.dao.mongo.entity.User;
 import reactor.core.publisher.Mono;
 
@@ -25,6 +26,7 @@ import reactor.core.publisher.Mono;
 public class DataBaseTestController {
 
   private final MongoServices mongoServices;
+  private final ProducerService producerService;
 
   /**
    * Suma dos números enteros.
@@ -33,8 +35,9 @@ public class DataBaseTestController {
    * @return La suma de ambos números.
    */
   @Autowired
-  private DataBaseTestController(MongoServices mongoServices) {
+  private DataBaseTestController(MongoServices mongoServices, ProducerService producerService) {
     this.mongoServices =  mongoServices;
+    this.producerService = producerService;
   }
 
 
@@ -76,18 +79,19 @@ public class DataBaseTestController {
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
 
-  @DeleteMapping("/userdel/{id}")
-  public Mono<ResponseEntity<Void>> deleteUser(@PathVariable(value = "id") String id) {
-    mongoServices.deleteUser(id);
-    return Mono.just(new ResponseEntity<Void>(HttpStatus.OK));
+  @DeleteMapping("/userdel")
+  public Mono<ResponseEntity<Void>> deleteUser(@RequestBody String id) {
+    producerService.sendIdUser(id);
+    //mongoServices.deleteUser(id);
+    return Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT));
 
   }
 
-  @PutMapping("/userup/{id}")
-  public Mono<ResponseEntity<Void>> updateUser(@PathVariable(value = "id") String id,
-                                               @Validated @RequestBody User u) {
-    mongoServices.updateUser(id, u);
-    return Mono.just(new ResponseEntity<Void>(HttpStatus.OK));
+  @PutMapping("/userup")
+  public  Mono<ResponseEntity<User>> updateUser(@Validated @RequestBody User u) {
+   // mongoServices.updateUser(u);
+   return mongoServices.saveUser(u).map(user -> ResponseEntity.ok(user))
+       .defaultIfEmpty(ResponseEntity.notFound().build());
 
   }
 

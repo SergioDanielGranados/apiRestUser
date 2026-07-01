@@ -1,6 +1,9 @@
 package org.user.busisness;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.user.dao.mongo.entity.Neighbor;
 import org.user.dao.mongo.entity.User;
@@ -67,26 +70,27 @@ public class MongoServices {
    * @param id Usuario para eliminar
    */
   public void deleteUser(String id) {
+    userRepository.deleteById(id);
     userRepository.findById(id).flatMap(user -> userRepository.delete(user));
+    userRepository.deleleUserById(id);
   }
 
   /**
    * Usuario para registrar
    *
-   * @param id del Usuario para actualizar
    * @param userUpdate Usuario para actualizar
    * @return El usuario insertado
    */
 
-  public Mono<User> updateUser(String id, User userUpdate) {
+  public Mono<User> updateUser(User userUpdate) {
 
-    return userRepository.findById(id).flatMap(user -> {
+    return userRepository.findById(userUpdate.getUserId()).flatMap(user -> {
       user.setName(userUpdate.getName());
       user.setEmail(userUpdate.getEmail());
       user.setOrders(userUpdate.getOrders());
-      return userRepository.save(user); });
+      return userRepository.save(user);
+    });
   }
-
   /**
    * Usuario para Busqueda por ID
    *
