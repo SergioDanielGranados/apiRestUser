@@ -1,5 +1,6 @@
 package org.user.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.user.busisness.MongoServices;
 import org.user.busisness.ProducerService;
-import org.user.dao.mongo.entity.User;
+import org.user.mongo.entity.User;
 import reactor.core.publisher.Mono;
 
 /**
@@ -22,6 +23,7 @@ import reactor.core.publisher.Mono;
  * @author Tu Nombre
  * @version 1.0
  */
+@Slf4j
 @RestController
 public class DataBaseTestController {
 
@@ -42,11 +44,13 @@ public class DataBaseTestController {
 
   @PostMapping("/create")
   public Mono<User> createUser(@Validated @RequestBody User u) {
+    log.info("Inicia Creacion Usuario {} ", u.toString());
     return mongoServices.saveUser(u);
   }
 
   @GetMapping("/user/{id}")
   public Mono<ResponseEntity<User>> getUserById(@PathVariable(value = "id") String id) {
+    log.info("Inicia Obtencion Usuario Id {} ",id);
     return mongoServices.getUser(id)
         .map(user -> ResponseEntity.ok(user))
         .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -54,6 +58,7 @@ public class DataBaseTestController {
 
   @DeleteMapping("/userdel")
   public Mono<ResponseEntity<Void>> deleteUser(@RequestBody String id) {
+    log.info("Inicia Eliminacion Usuario {} ", id);
     producerService.sendIdUser(id);
     //mongoServices.deleteUser(id);
     return Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT));
@@ -63,6 +68,7 @@ public class DataBaseTestController {
   @PutMapping("/userup")
   public  Mono<ResponseEntity<User>> updateUser(@Validated @RequestBody User u) {
    // mongoServices.updateUser(u);
+    log.info("Inicia Update Usuario Id {} ",u.toString());
    return mongoServices.saveUser(u).map(user -> ResponseEntity.ok(user))
        .defaultIfEmpty(ResponseEntity.notFound().build());
 

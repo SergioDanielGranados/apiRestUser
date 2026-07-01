@@ -1,13 +1,13 @@
 package org.user.busisness;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.user.RabbitMQ.RabbitMqConfig;
-import org.user.dao.mongo.repository.NeighborRepository;
-import org.user.dao.mongo.repository.UserRepository;
 
+@Slf4j
 @Service
 public class ProducerService {
 
@@ -25,7 +25,7 @@ public class ProducerService {
         RabbitMqConfig.USER_ROUTING_KEY,
         message
     );
-    System.out.println("Message sent: " + message);
+    log.debug("Mensaje Enviado {} ",message);
   }
 
 }

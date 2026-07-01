@@ -1,11 +1,10 @@
 package org.user.busisness;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.user.dao.mongo.entity.Neighbor;
-import org.user.dao.mongo.entity.User;
-import org.user.dao.mongo.repository.NeighborRepository;
-import org.user.dao.mongo.repository.UserRepository;
+import org.user.mongo.entity.User;
+import org.user.mongo.repository.UserRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 /**
@@ -15,31 +14,15 @@ import reactor.core.publisher.Mono;
  * @version 1.0
  */
 
+@Slf4j
 @Service
 public class MongoServices {
 
-  private final NeighborRepository neighborRepository;
   private final UserRepository userRepository;
 
   @Autowired
-  public MongoServices(NeighborRepository neighborRepository, UserRepository userRepository) {
-    this.neighborRepository = neighborRepository;
+  public MongoServices(UserRepository userRepository) {
     this.userRepository = userRepository;
-  }
-
-  public Flux<Neighbor> getAllNeighbor() {
-    // Fetch all records
-    return neighborRepository.findAll();
-  }
-  /**
-   * Suma dos números enteros.
-   *
-   * @param n El segundo número a sumar.
-   * @return La suma de ambos números.
-   */
-  public Mono<Neighbor> save(Neighbor n) {
-    // Fetch all records
-    return neighborRepository.save(n);
   }
 
   /**
@@ -58,6 +41,7 @@ public class MongoServices {
    * @return El usuario insertado
    */
   public Mono<User> saveUser(User u) {
+    log.info("Creacion Usuario  in DB {} " ,u.getUserId());
     return userRepository.save(u);
   }
 
@@ -95,6 +79,7 @@ public class MongoServices {
    * @return Usuario para Busqueda por ID
    */
   public Mono<User> getUser(String id) {
+    log.info("Obtencion Usuario  in DB Id {} ",id);
     return userRepository.findById(id);
   }
 

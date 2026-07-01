@@ -1,11 +1,13 @@
 package org.user.aop;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
-import org.user.dao.mongo.entity.User;
+import org.user.mongo.entity.User;
 
+@Slf4j
 @Aspect
 @Component
 public class ListenerUserCreate {
@@ -23,6 +25,7 @@ public class ListenerUserCreate {
     Object[] args = joinPoint.getArgs();
     User u = (User) args[0];
     System.out.println("Returned value: " + u.getUserId());
+    log.info("Se inicia Envio de Id de usuario {}", u.getUserId());
   }
 
 }

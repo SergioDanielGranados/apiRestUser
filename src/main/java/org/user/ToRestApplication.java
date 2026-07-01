@@ -8,8 +8,8 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 
 
 @SpringBootApplication
-@EnableReactiveMongoRepositories(basePackages = "org.user.dao.mongo.repository")
-@EntityScan(basePackages = {"org.user.dao.mongo.entity"})
+@EnableReactiveMongoRepositories(basePackages = "org.user.mongo.repository")
+@EntityScan(basePackages = {"org.user.mongo.entity"})
 @ComponentScan(basePackages = "org.user")
 public class ToRestApplication {
 
