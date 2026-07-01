@@ -40,33 +40,6 @@ public class DataBaseTestController {
     this.producerService = producerService;
   }
 
-
-  /**
-   * Suma dos números enteros.
-   *
-   * @return La suma de ambos números.
-
-   @GetMapping("/mongo")
-   public ResponseEntity<Flux<String>>  mongo() {
-
-   Flux<String> metricStream = mongoServices.getAllNeighbor()
-   .map(Neighbor::toString);
-   return ResponseEntity.status(200).body(metricStream);
-   }
-
-   @PostMapping("/create")
-   public Mono<Neighbor> createContact() {
-
-   Neighbor n = new Neighbor();
-   n.setAge(11);
-   n.setApartament(503);
-   n.setEmail("sdf@hotmail.com");
-   n.setId("123456789");
-   n.setName("Daniel Sergio");
-
-   return mongoServices.save(n);
-   }*/
-
   @PostMapping("/create")
   public Mono<User> createUser(@Validated @RequestBody User u) {
     return mongoServices.saveUser(u);

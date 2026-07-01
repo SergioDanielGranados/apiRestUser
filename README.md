@@ -1,18 +1,18 @@
 # API USER CRUD
 Api prueba CRUD Clientes
 
-## Description
+## Descripcion
 
 EL CRUD  Create , get User By Id , delete y Update para todo el proceso de registro o modificacion de algun usuario
 ## Getting Started
 
-### Dependencies
+### Dependencias
 
 * Es necesario el uso de Docker para poder consumir las imagenes docker de Mongo y de RabbitMQ para el correcto funcionamiento del microservicio
 
 ### Instalacion
 
-* How/where to Get ,Git , Java 17 , Intelij and Maven
+* How/where to Get ,Git , Java 17 , Intelij Community Edition and Maven
 
 
 ### Ejecutar el programa
